@@ -1,0 +1,50 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class JDBCdemo {
+	private static String URL = "jdbc:mysql://localhost:3306/student?serverTimezone=UTC";
+	private static String NAME = "root";
+	private static String PASS = "root";
+
+	public static void Update() {
+		Connection connection = null;
+		PreparedStatement pstm = null;
+		try {
+			// 加载驱动类
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			// 与数据库建立连接
+			connection = DriverManager.getConnection(URL, NAME, PASS);
+			// 执行SQL
+			String sql = "insert into stuinfo values(3,'ctl','se2','girl')";
+			pstm = connection.prepareStatement(sql);
+			int count = pstm.executeUpdate();
+			if (count > 0) {
+				System.out.println("操作成功！");
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		finally {
+			try {
+				if (pstm != null) pstm.close();
+				if (connection != null) connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+
+	}
+
+	public static void main(String[] args) throws ClassNotFoundException, SQLException {
+
+		Update();
+
+	}
+}
